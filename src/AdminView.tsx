@@ -422,7 +422,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
               <div className="liveness_div">
                 {showCapturedImage && regReferenceImage && (
                   <div>
-                    <p>Captured Your Image:</p>
+                    <p>Captured Image:</p>
                     <img
                       className="result-image"
                       src={
