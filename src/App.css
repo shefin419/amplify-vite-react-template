@@ -12,7 +12,7 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #222dffaa);
 }
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
@@ -38,5 +38,27 @@
 }
 
 .read-the-docs {
-  color: #888;
+  color: #838383;
 }
+
+
+
+
+.liveness_div{
+  width: 450px;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
+ border: 0.5px solid #ccc;
+ align-items: center;
+ justify-content: center;
+}
+  .liveness_div{
+    /* width: 350px; */
+    display: flex;
+    flex-direction: column;
+   border: 0.5px solid #ccc;
+  }
+
+
+

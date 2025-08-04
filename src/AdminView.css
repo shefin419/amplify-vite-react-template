@@ -1,0 +1,211 @@
+.admin-container {
+  max-width: 450px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+.admin-container1 {
+  max-width: 300px;
+  margin: 1rem auto;
+  padding: 1rem;
+  background-color: #f9fafb00;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.253);
+  font-family: 'Segoe UI', sans-serif;
+}
+.admin-header {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.admin-header button {
+  background-color: #ef4444;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.75rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.admin-header button:hover {
+  background-color: #dc2626;
+}
+
+.input-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.input-section label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #374151;
+  /* position: absolute;
+  left: 0; */
+}
+
+.input-section input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 0.4rem;
+}
+
+.start-btn {
+  background-color: #2563eb;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer !important;
+  transition: background 0.2s ease;
+}
+.start-btn:disabled {
+  background-color: #6a9bd1;
+  cursor: not-allowed;
+}
+.start-btn:hover:not(:disabled) {
+  background-color: #1d4ed8;
+  cursor: pointer;
+}
+
+.result-image {
+  margin-top: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid #d1d5db;
+  max-width: 100%;
+  object-fit: cover;
+}
+
+.audit-images {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.audit-images img {
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.upload-status {
+  margin-top: 1.5rem;
+  font-weight: 600;
+}
+.error-message {
+  margin-top: 1rem;
+  color: #b91c1c;
+  font-weight: 500;
+}
+
+.amplify-liveness-start-screen-warning{
+  display: flex !important;
+  position: absolute;
+  top: 10px;
+  width: 100% !important;
+}
+
+
+  .attandence-header-font-style{
+    font-size: 19px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+  }
+
+.amplify-liveness-overlay {
+    flex-direction: column;
+    position: relative !important;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+}
+.attendance-date-div{
+  display:flex;
+  justify-content: space-between;
+  padding:0 20px;
+}
+.attendance-date-div label{
+   border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.253);
+  padding: 5px;
+}
+.web-view{
+  display: block;
+}
+.mob-view{
+  display: none;
+}
+@media (max-width:600px){
+  .admin-container {
+  max-width:95%;
+  background-color: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', sans-serif;
+}
+.attendance-date-div{
+  display:flex;
+  flex-direction: column;
+  gap: 5px;
+  padding:0 20px;
+}
+.web-view{
+  display: none;
+}
+.mob-view{
+  display: block;
+}
+.admin-container1 {
+  max-width: 100%;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: #f9fafb00;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.253);
+  font-family: 'Segoe UI', sans-serif;
+}
+.amplify-liveness-start-screen-warning{
+  display: flex !important;
+  position: relative;
+  top: 0px;
+  width: 100% !important;
+}
+.amplify-liveness-overlay {
+    flex-direction: column;
+    position: absolute !important;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+}
+.amplify-liveness-toast--primary .amplify-liveness-toast__message{
+  font-size: 13px;
+}
+
+}
+
+select{
+     padding: 0.6rem 0.8rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-top: 0.4rem;
+}
+.branch-select option {
+  padding: 10px;
+  border-radius: 8px !important;
+  background:radial-gradient(#ffffff, #1f90ff);
+}
