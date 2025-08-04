@@ -7,6 +7,7 @@ import './AdminView.css';
 import outputs from '../amplify_outputs.json';
 import { FiCalendar } from 'react-icons/fi';
 
+
 Amplify.configure(outputs);
 
 interface ReferenceImage {
