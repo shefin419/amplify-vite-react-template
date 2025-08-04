@@ -7,7 +7,6 @@ import "./AdminView.css";
 
 import outputs from "../amplify_outputs.json";
 import { FiCalendar } from "react-icons/fi";
-
 Amplify.configure(outputs);
 
 type AdminViewProps = {
@@ -423,7 +422,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
               <div className="liveness_div">
                 {showCapturedImage && regReferenceImage && (
                   <div>
-                    <p>Captured Image:</p>
+                    <p>Captured Your Image:</p>
                     <img
                       className="result-image"
                       src={
