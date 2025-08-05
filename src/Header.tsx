@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
-import "./Header.css";
+import "./header.css";
 import { FiHome, FiLogOut, FiMenu } from "react-icons/fi";
 
 interface HeaderProps {
