@@ -4,9 +4,7 @@ import App from "./App";
 import "./index.css";
 import { Amplify } from "aws-amplify";
 import { onMessageListener, requestForToken } from "./firebase";
-
 import outputs from '../amplify_outputs.json';
-
 Amplify.configure(outputs);
 
 // Mount React App

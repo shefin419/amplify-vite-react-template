@@ -1,5 +1,5 @@
 import React, { useState, useEffect, ReactNode, Dispatch, SetStateAction } from "react";
-import { FaceLivenessDetector } from "@aws-amplify/ui-react-liveness";
+// import { FaceLivenessDetector } from "@aws-amplify/ui-react-liveness";
 import { Loader, ThemeProvider } from "@aws-amplify/ui-react";
 import { Amplify } from "aws-amplify";
 import "@aws-amplify/ui-react/styles.css";
@@ -20,10 +20,10 @@ interface ReferenceImage {
   S3Object?: { Bucket: string; Name: string };
 }
 
-interface Coordinates {
-  latitude: number;
-  longitude: number;
-}
+// interface Coordinates {
+//   latitude: number;
+//   longitude: number;
+// }
 
 interface AuditImage extends ReferenceImage {}
 
@@ -47,10 +47,10 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
   const [branchId, setBranchId] = useState<string>("");
   const [branches, setBranches] = useState<string[]>([]);
 
-  const uniqueUserToken = localStorage.getItem("uniqueUserToken");
-  const loginUsername = localStorage.getItem("loginUsername");
-  const host = localStorage.getItem("host");
-  const loginBranch = localStorage.getItem('loginBranch');
+  // const uniqueUserToken = localStorage.getItem("uniqueUserToken");
+  // const loginUsername = localStorage.getItem("loginUsername");
+  // const host = localStorage.getItem("host");
+  // const loginBranch = localStorage.getItem('loginBranch');
   const branchMap: Record<string, string> = JSON.parse(localStorage.getItem("branchmap") || "{}");
 
   useEffect(() => {
@@ -64,7 +64,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
           const firstBranchName = branchNames[0];
           const firstBranchId = branchMap[firstBranchName] || "";
           setBranchId(firstBranchId);  // Set to "DE000001" instead of "DELHI"
-          console.log(confidence,comparisonResult,auditImages,branches);
+          console.log(confidence,comparisonResult,auditImages,branches,sessionId);
         }
       } catch (err) {
         setError(new Error("Failed to parse branch details"));
@@ -104,282 +104,282 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
     setError(null);
   }, [buttonName]);
 
-  const handleAnalysisComplete = async () => {
-    if (!sessionId) return;
-    try {
-      setLoading(true);
-      const res = await fetch(
-        `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=getSessionResults&sessionId=${sessionId}`
-      );
-      if (!res.ok) throw new Error(res.statusText);
-      const data = await res.json();
-      setAnalysisComplete(true);
-      setShowCapturedImage(true);
-      setAuditImages(data.auditImages || []);
-      setRegReferenceImage(data.referenceImage || null);
+  // const handleAnalysisComplete = async () => {
+  //   if (!sessionId) return;
+  //   try {
+  //     setLoading(true);
+  //     const res = await fetch(
+  //       `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=getSessionResults&sessionId=${sessionId}`
+  //     );
+  //     if (!res.ok) throw new Error(res.statusText);
+  //     const data = await res.json();
+  //     setAnalysisComplete(true);
+  //     setShowCapturedImage(true);
+  //     setAuditImages(data.auditImages || []);
+  //     setRegReferenceImage(data.referenceImage || null);
 
-      const userToken = localStorage.getItem("fcmToken");
+  //     const userToken = localStorage.getItem("fcmToken");
 
-      if (!userToken) {
-        setUploadStatus(
-          <span style={{ color: "red", fontWeight: 500 }}>
-            Token missing. Onboarding failed.
-          </span>
-        );
-        return;
-      }
+  //     if (!userToken) {
+  //       setUploadStatus(
+  //         <span style={{ color: "red", fontWeight: 500 }}>
+  //           Token missing. Onboarding failed.
+  //         </span>
+  //       );
+  //       return;
+  //     }
 
-      try {
-        const saveTokenResponse = await fetch(
-          "https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              host: host,
-              username: userName,
-              token: userToken,
-            }),
-          }
-        );
-        const saveTokenData = await saveTokenResponse.json();
+  //     try {
+  //       const saveTokenResponse = await fetch(
+  //         "https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth",
+  //         {
+  //           method: "POST",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //           },
+  //           body: JSON.stringify({
+  //             host: host,
+  //             username: userName,
+  //             token: userToken,
+  //           }),
+  //         }
+  //       );
+  //       const saveTokenData = await saveTokenResponse.json();
 
-        if (saveTokenData.userid === "Success") {
-          const selectedBranchLocation = JSON.parse(localStorage.getItem("selectedBranchLocation") || "{}");
-          if (
-            !selectedBranchLocation.location ||
-            !selectedBranchLocation.location.latitude ||
-            !selectedBranchLocation.location.longitude
-          ) {
-            setAttendanceStatus("Selected branch location not available.");
-            return;
-          }
+  //       if (saveTokenData.userid === "Success") {
+  //         const selectedBranchLocation = JSON.parse(localStorage.getItem("selectedBranchLocation") || "{}");
+  //         if (
+  //           !selectedBranchLocation.location ||
+  //           !selectedBranchLocation.location.latitude ||
+  //           !selectedBranchLocation.location.longitude
+  //         ) {
+  //           setAttendanceStatus("Selected branch location not available.");
+  //           return;
+  //         }
          
-          const uploadResponse = await fetch(
-            `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=uploadImagesToS3&sessionId=${sessionId}&userId=${userToken}&userCode=${userName}&companyId=${host}&branchNames=${selectedBranchLocation.branchId}`
-          );
-          const uploadData = await uploadResponse.json();
+  //         const uploadResponse = await fetch(
+  //           `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=uploadImagesToS3&sessionId=${sessionId}&userId=${userToken}&userCode=${userName}&companyId=${host}&branchNames=${selectedBranchLocation.branchId}`
+  //         );
+  //         const uploadData = await uploadResponse.json();
 
-          const locationObj = JSON.parse(localStorage.getItem("selectedBranchLocation") || "{}");
-          let geoString = "";
-          const selectedBranchId = locationObj.branchId;
-          if (!selectedBranchId) {
-            console.error("Branch ID not available. Please select a branch in App Settings.");
-            return;
-          }
-          if (locationObj.location && locationObj.location.latitude && locationObj.location.longitude) {
-            geoString = `${locationObj.location.latitude},${locationObj.location.longitude}`;
-          } else {
-            console.warn("Location data not available in selectedBranchLocation");
-            geoString = ""; // Adjust based on API requirements
-          }
-          const saveLocationResponse = await fetch(
-            "https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                host: host,
-                username: userName,
-                geo: geoString,
-                branch: selectedBranchId, // This should now be "DE000001"
-                usergeo: "geo"
-              }),
-            }
-          );
-          await saveLocationResponse.json();
+  //         const locationObj = JSON.parse(localStorage.getItem("selectedBranchLocation") || "{}");
+  //         let geoString = "";
+  //         const selectedBranchId = locationObj.branchId;
+  //         if (!selectedBranchId) {
+  //           console.error("Branch ID not available. Please select a branch in App Settings.");
+  //           return;
+  //         }
+  //         if (locationObj.location && locationObj.location.latitude && locationObj.location.longitude) {
+  //           geoString = `${locationObj.location.latitude},${locationObj.location.longitude}`;
+  //         } else {
+  //           console.warn("Location data not available in selectedBranchLocation");
+  //           geoString = ""; // Adjust based on API requirements
+  //         }
+  //         const saveLocationResponse = await fetch(
+  //           "https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth",
+  //           {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //             body: JSON.stringify({
+  //               host: host,
+  //               username: userName,
+  //               geo: geoString,
+  //               branch: selectedBranchId, // This should now be "DE000001"
+  //               usergeo: "geo"
+  //             }),
+  //           }
+  //         );
+  //         await saveLocationResponse.json();
 
-          setUploadStatus(
-            <span
-              style={{
-                color:
-                  uploadData.message === "Images processed and uploaded successfully" ? "green" : "red",
-                fontWeight: 500,
-              }}
-            >
-              ✔️ Onboarding successful.
-            </span>
-          );
-        } else {
-          setUploadStatus(
-            <span style={{ color: "red", fontWeight: 500 }}>
-              ⚠️ Onboarding failed — try again
-            </span>
-          );
-        }
-      } catch (saveError) {
-        console.error("Error saving token:", saveError);
-        setUploadStatus(
-          <span style={{ color: "red", fontWeight: 500 }}>
-            Error saving token: {(saveError as Error).message}
-          </span>
-        );
-      }
-    } catch (err) {
-      setError(err as Error);
-      setUploadStatus(
-        <span style={{ color: "red", fontWeight: 500 }}>
-          Error: {(err as Error).message}
-        </span>
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+  //         setUploadStatus(
+  //           <span
+  //             style={{
+  //               color:
+  //                 uploadData.message === "Images processed and uploaded successfully" ? "green" : "red",
+  //               fontWeight: 500,
+  //             }}
+  //           >
+  //             ✔️ Onboarding successful.
+  //           </span>
+  //         );
+  //       } else {
+  //         setUploadStatus(
+  //           <span style={{ color: "red", fontWeight: 500 }}>
+  //             ⚠️ Onboarding failed — try again
+  //           </span>
+  //         );
+  //       }
+  //     } catch (saveError) {
+  //       console.error("Error saving token:", saveError);
+  //       setUploadStatus(
+  //         <span style={{ color: "red", fontWeight: 500 }}>
+  //           Error saving token: {(saveError as Error).message}
+  //         </span>
+  //       );
+  //     }
+  //   } catch (err) {
+  //     setError(err as Error);
+  //     setUploadStatus(
+  //       <span style={{ color: "red", fontWeight: 500 }}>
+  //         Error: {(err as Error).message}
+  //       </span>
+  //     );
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const handleComparison = async () => {
-    try {
-      const response = await fetch(
-        `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=getSessionResults&sessionId=${sessionId}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const data = await response.json();
-      setAnalysisComplete(true);
-      setAuditImages(data.auditImages);
-      setAtndReferenceImage(data.referenceImage);
-      setConfidence(data.confidence);
-      if (data.confidence > 70) {
-        handleCompareFaces();
-      } else {
-        setAttendanceStatus("User is not live");
-      }
-    } catch (error) {
-      setError(error as Error);
-      setAttendanceStatus("Error during analysis");
-    }
-  };
+  // const handleComparison = async () => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=getSessionResults&sessionId=${sessionId}`
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
+  //     const data = await response.json();
+  //     setAnalysisComplete(true);
+  //     setAuditImages(data.auditImages);
+  //     setAtndReferenceImage(data.referenceImage);
+  //     setConfidence(data.confidence);
+  //     if (data.confidence > 70) {
+  //       handleCompareFaces();
+  //     } else {
+  //       setAttendanceStatus("User is not live");
+  //     }
+  //   } catch (error) {
+  //     setError(error as Error);
+  //     setAttendanceStatus("Error during analysis");
+  //   }
+  // };
 
-  const handleCompareFaces = async () => {
-    const selectedBranchLocation = JSON.parse(localStorage.getItem("selectedBranchLocation") || "{}");
-    if (
-      !selectedBranchLocation.location ||
-      !selectedBranchLocation.location.latitude ||
-      !selectedBranchLocation.location.longitude
-    ) {
-      setAttendanceStatus("Selected branch location not available.");
-      return;
-    }
+  // const handleCompareFaces = async () => {
+  //   const selectedBranchLocation = JSON.parse(localStorage.getItem("selectedBranchLocation") || "{}");
+  //   if (
+  //     !selectedBranchLocation.location ||
+  //     !selectedBranchLocation.location.latitude ||
+  //     !selectedBranchLocation.location.longitude
+  //   ) {
+  //     setAttendanceStatus("Selected branch location not available.");
+  //     return;
+  //   }
 
-    let userLocation: Coordinates;
-    try {
-      userLocation = await new Promise<Coordinates>((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(
-          (position) =>
-            resolve({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            }),
-          (error) => reject(error)
-        );
-      });
+  //   let userLocation: Coordinates;
+  //   try {
+  //     userLocation = await new Promise<Coordinates>((resolve, reject) => {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) =>
+  //           resolve({
+  //             latitude: position.coords.latitude,
+  //             longitude: position.coords.longitude,
+  //           }),
+  //         (error) => reject(error)
+  //       );
+  //     });
 
-      const distance = calculateDistance(
-        userLocation.latitude,
-        userLocation.longitude,
-        selectedBranchLocation.location.latitude,
-        selectedBranchLocation.location.longitude
-      );
-      if (distance > 5) {
-        setAttendanceStatus("You are not within 5m of the selected branch.");
-        return;
-      }
+  //     const distance = calculateDistance(
+  //       userLocation.latitude,
+  //       userLocation.longitude,
+  //       selectedBranchLocation.location.latitude,
+  //       selectedBranchLocation.location.longitude
+  //     );
+  //     if (distance > 5) {
+  //       setAttendanceStatus("You are not within 5m of the selected branch.");
+  //       return;
+  //     }
 
-      localStorage.setItem("userLocation", JSON.stringify(userLocation));
-    } catch (error) {
-      console.error("Error getting user location:", error);
-      setAttendanceStatus("Unable to verify location. Please ensure location services are enabled.");
-      return;
-    }
+  //     localStorage.setItem("userLocation", JSON.stringify(userLocation));
+  //   } catch (error) {
+  //     console.error("Error getting user location:", error);
+  //     setAttendanceStatus("Unable to verify location. Please ensure location services are enabled.");
+  //     return;
+  //   }
 
-    try {
-      const response = await fetch(
-        `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=compareWithUserIdAndBranchName&sessionId=${sessionId}&userId=${uniqueUserToken}&userCode=${loginUsername}&companyId=${host}&branchName=${loginBranch}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+  //   try {
+  //     const response = await fetch(
+  //       `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=compareWithUserIdAndBranchName&sessionId=${sessionId}&userId=${uniqueUserToken}&userCode=${loginUsername}&companyId=${host}&branchName=${loginBranch}`
+  //     );
+  //     if (!response.ok) {
+  //       throw new Error("Network response was not ok");
+  //     }
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      const now = new Date();
-      const formattedDateTime = now
-        .toLocaleString("en-GB", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-        .replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, "$3-$2-$1 $4");
+  //     const now = new Date();
+  //     const formattedDateTime = now
+  //       .toLocaleString("en-GB", {
+  //         year: "numeric",
+  //         month: "2-digit",
+  //         day: "2-digit",
+  //         hour: "2-digit",
+  //         minute: "2-digit",
+  //         second: "2-digit",
+  //         hour12: false,
+  //       })
+  //       .replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, "$3-$2-$1 $4");
 
-      const currentDate = getCurrentDate();
+  //     const currentDate = getCurrentDate();
 
-      if (data.status === "success" && data.message === "Match found") {
-        try {
-          const savePunchResponse = await fetch(
-            "https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                host: host,
-                token: "punch",
-                username: loginUsername,
-                type: punchType,
-                time: formattedDateTime,
-                date: currentDate,
-              }),
-            }
-          );
-          await savePunchResponse.json();
-        } catch (saveError) {
-          console.error("Error saving punch:", saveError);
-          setError(saveError as Error);
-        }
-        setAttendanceStatus(`✔️ Clock ${punchType} Successful - Match found`);
-      } else if (data.status === "wait") {
-        setAttendanceStatus(`⏳ Please wait for 2 minutes... And TimeLeft: ${data.timeLeft}seconds `);
-        // TimeLeft: ${data.timeLeft}
-      } else {
-        setAttendanceStatus(`⚠️ Clock ${punchType} failed - ${data.message || "No match found"}`);
-      }
-      setComparisonResult(data.message);
+  //     if (data.status === "success" && data.message === "Match found") {
+  //       try {
+  //         const savePunchResponse = await fetch(
+  //           "https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth",
+  //           {
+  //             method: "POST",
+  //             headers: {
+  //               "Content-Type": "application/json",
+  //             },
+  //             body: JSON.stringify({
+  //               host: host,
+  //               token: "punch",
+  //               username: loginUsername,
+  //               type: punchType,
+  //               time: formattedDateTime,
+  //               date: currentDate,
+  //             }),
+  //           }
+  //         );
+  //         await savePunchResponse.json();
+  //       } catch (saveError) {
+  //         console.error("Error saving punch:", saveError);
+  //         setError(saveError as Error);
+  //       }
+  //       setAttendanceStatus(`✔️ Clock ${punchType} Successful - Match found`);
+  //     } else if (data.status === "wait") {
+  //       setAttendanceStatus(`⏳ Please wait for 2 minutes... And TimeLeft: ${data.timeLeft}seconds `);
+  //       // TimeLeft: ${data.timeLeft}
+  //     } else {
+  //       setAttendanceStatus(`⚠️ Clock ${punchType} failed - ${data.message || "No match found"}`);
+  //     }
+  //     setComparisonResult(data.message);
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            localStorage.setItem(
-              "userLocation",
-              JSON.stringify({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              })
-            );
-          },
-          (error) => {
-            console.error("Error getting location:", error);
-            setAttendanceStatus((prev) => `${prev} (Location unavailable)`);
-          }
-        );
-      } else {
-        console.error("Geolocation is not supported by this browser.");
-        setAttendanceStatus((prev) => `${prev} (Geolocation not supported)`);
-      }
-    } catch (error) {
-      setError(error as Error);
-      setAttendanceStatus(`⚠️ Error: ${(error as Error).message}`);
-    }
-  };
+  //     if (navigator.geolocation) {
+  //       navigator.geolocation.getCurrentPosition(
+  //         (position) => {
+  //           localStorage.setItem(
+  //             "userLocation",
+  //             JSON.stringify({
+  //               latitude: position.coords.latitude,
+  //               longitude: position.coords.longitude,
+  //             })
+  //           );
+  //         },
+  //         (error) => {
+  //           console.error("Error getting location:", error);
+  //           setAttendanceStatus((prev) => `${prev} (Location unavailable)`);
+  //         }
+  //       );
+  //     } else {
+  //       console.error("Geolocation is not supported by this browser.");
+  //       setAttendanceStatus((prev) => `${prev} (Geolocation not supported)`);
+  //     }
+  //   } catch (error) {
+  //     setError(error as Error);
+  //     setAttendanceStatus(`⚠️ Error: ${(error as Error).message}`);
+  //   }
+  // };
 
   const handleStartRecognition = () => {
     if (!userName) {
@@ -397,19 +397,19 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
     return `${year}-${month}-${day}`;
   };
 
-  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-    const R = 6371e3; // Earth radius in meters
-    const φ1 = (lat1 * Math.PI) / 180;
-    const φ2 = (lat2 * Math.PI) / 180;
-    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+  // const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+  //   const R = 6371e3; // Earth radius in meters
+  //   const φ1 = (lat1 * Math.PI) / 180;
+  //   const φ2 = (lat2 * Math.PI) / 180;
+  //   const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  //   const Δλ = ((lon2 - lon1) * Math.PI) / 180;
 
-    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  //   const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-    const distance = R * c;
-    return distance;
-  };
+  //   const distance = R * c;
+  //   return distance;
+  // };
 
   return (
     <>
@@ -462,11 +462,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
               </div>
             ) : (
               <div className="liveness_div">
-                <FaceLivenessDetector
-                  sessionId={sessionId!}
-                  region="ap-south-1"
-                  onAnalysisComplete={handleAnalysisComplete}
-                />
+                <p>live</p>
               </div>
             )}
             {error && <div className="error-message">Error: {error.message}</div>}
@@ -612,11 +608,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
                       </div>
                     ) : (
                       <div className="liveness_div82">
-                        <FaceLivenessDetector
-                          sessionId={sessionId!}
-                          region="ap-south-1"
-                          onAnalysisComplete={handleComparison}
-                        />
+                       <p>liveness</p>
                       </div>
                     )}
                   </>
