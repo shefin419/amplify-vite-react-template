@@ -1,5 +1,5 @@
 import { useState, useEffect, ReactNode, Dispatch, SetStateAction } from 'react';
-// import { FaceLivenessDetector } from '@aws-amplify/ui-react-liveness';
+import { FaceLivenessDetector } from '@aws-amplify/ui-react-liveness';
 import { Loader, ThemeProvider } from '@aws-amplify/ui-react';
 import { Amplify } from 'aws-amplify';
 import '@aws-amplify/ui-react/styles.css';
@@ -46,10 +46,7 @@ const UserView: React.FC<HeaderProps> = ({ setPunchType, punchType }) => {
     if (punchType) {
       const fetchSession = async () => {
         setLoading(true);
-        console.log(confidence,comparisonResult,auditImages,uploadStatus,loginBranch,
-host,
-uniqueUserToken,
-loginUsername);
+        console.log(confidence,comparisonResult,auditImages,uploadStatus);
         try {
           const res = await fetch(
             'https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=createSession'
@@ -77,162 +74,162 @@ loginUsername);
     setError(null);
   }, [punchType]);
 
-  // const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
-  //   const R = 6371e3; // Earth radius in meters
-  //   const φ1 = (lat1 * Math.PI) / 180;
-  //   const φ2 = (lat2 * Math.PI) / 180;
-  //   const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  //   const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
+    const R = 6371e3; // Earth radius in meters
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lon2 - lon1) * Math.PI) / 180;
 
-  //   const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  //   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) + Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
-  //   const distance = R * c;
-  //   return distance;
-  // };
+    const distance = R * c;
+    return distance;
+  };
 
-  // const checkGeolocation = (): Promise<boolean> => {
-  //   return new Promise((resolve) => {
-  //     const storedGeo = localStorage.getItem('userGeo');
-  //     if (!storedGeo) {
-  //       setAttendanceStatus('⚠️ No stored location found');
-  //       resolve(false);
-  //       return;
-  //     }
+  const checkGeolocation = (): Promise<boolean> => {
+    return new Promise((resolve) => {
+      const storedGeo = localStorage.getItem('userGeo');
+      if (!storedGeo) {
+        setAttendanceStatus('⚠️ No stored location found');
+        resolve(false);
+        return;
+      }
 
-  //     const [storedLat, storedLon] = storedGeo.split(',').map(Number);
+      const [storedLat, storedLon] = storedGeo.split(',').map(Number);
 
-  //     if (!navigator.geolocation) {
-  //       setAttendanceStatus('⚠️ Geolocation is not supported by this browser');
-  //       resolve(false);
-  //       return;
-  //     }
+      if (!navigator.geolocation) {
+        setAttendanceStatus('⚠️ Geolocation is not supported by this browser');
+        resolve(false);
+        return;
+      }
 
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const currentLat = position.coords.latitude;
-  //         const currentLon = position.coords.longitude;
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const currentLat = position.coords.latitude;
+          const currentLon = position.coords.longitude;
 
-  //         localStorage.setItem(
-  //           'userLocation',
-  //           JSON.stringify({
-  //             latitude: currentLat,
-  //             longitude: currentLon,
-  //           })
-  //         );
+          localStorage.setItem(
+            'userLocation',
+            JSON.stringify({
+              latitude: currentLat,
+              longitude: currentLon,
+            })
+          );
 
-  //         const distance = calculateDistance(storedLat, storedLon, currentLat, currentLon);
-  //         if (distance <= 5) {
-  //           setAttendanceStatus('✅ Within 5 meters of designated location');
-  //           resolve(true);
-  //         } else {
-  //           setAttendanceStatus(`⚠️ Outside 5-meter radius (Distance: ${distance.toFixed(2)} meters)`);
-  //           resolve(false);
-  //         }
-  //       },
-  //       (error) => {
-  //         console.error('Error getting location:', error);
-  //         setAttendanceStatus(`⚠️ Error getting location: ${error.message}`);
-  //         resolve(false);
-  //       }
-  //     );
-  //   });
-  // };
+          const distance = calculateDistance(storedLat, storedLon, currentLat, currentLon);
+          if (distance <= 5) {
+            setAttendanceStatus('✅ Within 5 meters of designated location');
+            resolve(true);
+          } else {
+            setAttendanceStatus(`⚠️ Outside 5-meter radius (Distance: ${distance.toFixed(2)} meters)`);
+            resolve(false);
+          }
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          setAttendanceStatus(`⚠️ Error getting location: ${error.message}`);
+          resolve(false);
+        }
+      );
+    });
+  };
 
-  // const handleAnalysisCompleted = async () => {
-  //   try {
-  //     // Check if user is within 5-meter radius
-  //     const isWithinRadius = await checkGeolocation();
-  //     if (!isWithinRadius) {
-  //       setAnalysisComplete(true);
-  //       return;
-  //     }
+  const handleAnalysisCompleted = async () => {
+    try {
+      // Check if user is within 5-meter radius
+      const isWithinRadius = await checkGeolocation();
+      if (!isWithinRadius) {
+        setAnalysisComplete(true);
+        return;
+      }
 
-  //     const response = await fetch(
-  //       `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=getSessionResults&sessionId=${sessionId}`
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     const data = await response.json();
-  //     setUploadStatus('');
-  //     setAnalysisComplete(true);
-  //     setAuditImages(data.auditImages || []);
-  //     setAtndReferenceImage(data.referenceImage || null);
-  //     setConfidence(data.confidence);
+      const response = await fetch(
+        `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=getSessionResults&sessionId=${sessionId}`
+      );
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      setUploadStatus('');
+      setAnalysisComplete(true);
+      setAuditImages(data.auditImages || []);
+      setAtndReferenceImage(data.referenceImage || null);
+      setConfidence(data.confidence);
 
-  //     if (data.confidence > 70) {
-  //       await handleCompareFaces();
-  //     } else {
-  //       setComparisonResult('User is not live');
-  //       setAttendanceStatus('⚠️ User is not live');
-  //     }
-  //   } catch (error) {
-  //     setError(error as Error);
-  //     setAttendanceStatus(`⚠️ Error during analysis: ${(error as Error).message}`);
-  //   }
-  // };
+      if (data.confidence > 70) {
+        await handleCompareFaces();
+      } else {
+        setComparisonResult('User is not live');
+        setAttendanceStatus('⚠️ User is not live');
+      }
+    } catch (error) {
+      setError(error as Error);
+      setAttendanceStatus(`⚠️ Error during analysis: ${(error as Error).message}`);
+    }
+  };
 
-  // const handleCompareFaces = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=compareWithUserIdAndBranchName&sessionId=${sessionId}&userId=${uniqueUserToken}&userCode=${loginUsername}&companyId=${host}&branchName=${loginBranch}`
-  //     );
-  //     if (!response.ok) {
-  //       throw new Error('Network response was not ok');
-  //     }
-  //     const data = await response.json();
-  //     const now = new Date();
+  const handleCompareFaces = async () => {
+    try {
+      const response = await fetch(
+        `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=compareWithUserIdAndBranchName&sessionId=${sessionId}&userId=${uniqueUserToken}&userCode=${loginUsername}&companyId=${host}&branchName=${loginBranch}`
+      );
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      const now = new Date();
       
-  //     const formattedDateTime = now.toLocaleString('en-GB', {
-  //       year: 'numeric',
-  //       month: '2-digit',
-  //       day: '2-digit',
-  //       hour: '2-digit',
-  //       minute: '2-digit',
-  //       second: '2-digit',
-  //       hour12: false,
-  //     }).replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, '$3-$2-$1 $4');
-  //     const currentDate = getCurrentDate();
+      const formattedDateTime = now.toLocaleString('en-GB', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false,
+      }).replace(/(\d{2})\/(\d{2})\/(\d{4}), (\d{2}:\d{2}:\d{2})/, '$3-$2-$1 $4');
+      const currentDate = getCurrentDate();
 
-  //     if (data.status === 'success' && data.message === 'Match found') {
-  //       try {
-  //         const savePunchResponse = await fetch(
-  //           'https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth',
-  //           {
-  //             method: 'POST',
-  //             headers: {
-  //               'Content-Type': 'application/json',
-  //             },
-  //             body: JSON.stringify({
-  //               host: host,
-  //               token: 'punch',
-  //               username: loginUsername,
-  //               type: punchType,
-  //               time: formattedDateTime,
-  //               date: currentDate,
-  //             }),
-  //           }
-  //         );
-  //         await savePunchResponse.json();
-  //         setPunchRecorded({ type: punchType!, dateTime: formattedDateTime });
-  //         setAttendanceStatus(`✔️ Clock ${punchType} Successful - Match found (Similarity: ${data.similarity}%)`);
-  //       } catch (saveError) {
-  //         console.error('Error saving punch:', saveError);
-  //         setError(saveError as Error);
-  //         setAttendanceStatus(`⚠️ Clock ${punchType} failed - Error saving punch: ${(saveError as Error).message}`);
-  //       }
-  //     } else if (data.status === 'wait') {
-  //       setAttendanceStatus('⏳ Please wait for 2 minutes...');
-  //     } else {
-  //       setAttendanceStatus(`⚠️ Clock ${punchType} failed - ${data.message || 'No match found'}`);
-  //     }
-  //     setComparisonResult(data.message);
-  //   } catch (error) {
-  //     setError(error as Error);
-  //     setAttendanceStatus(`⚠️ Error: ${(error as Error).message}`);
-  //   }
-  // };
+      if (data.status === 'success' && data.message === 'Match found') {
+        try {
+          const savePunchResponse = await fetch(
+            'https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getAuth',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                host: host,
+                token: 'punch',
+                username: loginUsername,
+                type: punchType,
+                time: formattedDateTime,
+                date: currentDate,
+              }),
+            }
+          );
+          await savePunchResponse.json();
+          setPunchRecorded({ type: punchType!, dateTime: formattedDateTime });
+          setAttendanceStatus(`✔️ Clock ${punchType} Successful - Match found (Similarity: ${data.similarity}%)`);
+        } catch (saveError) {
+          console.error('Error saving punch:', saveError);
+          setError(saveError as Error);
+          setAttendanceStatus(`⚠️ Clock ${punchType} failed - Error saving punch: ${(saveError as Error).message}`);
+        }
+      } else if (data.status === 'wait') {
+        setAttendanceStatus('⏳ Please wait for 2 minutes...');
+      } else {
+        setAttendanceStatus(`⚠️ Clock ${punchType} failed - ${data.message || 'No match found'}`);
+      }
+      setComparisonResult(data.message);
+    } catch (error) {
+      setError(error as Error);
+      setAttendanceStatus(`⚠️ Error: ${(error as Error).message}`);
+    }
+  };
 
   const getCurrentDate = () => {
     const now = new Date();
@@ -317,12 +314,11 @@ loginUsername);
                 ) : (
                   sessionId && (
                     <div className="liveness_div">
-                      {/* <FaceLivenessDetector
+                      <FaceLivenessDetector
                         sessionId={sessionId}
                         region="ap-south-1"
                         onAnalysisComplete={handleAnalysisCompleted}
-                      /> */}
-                      <p>liveness</p>
+                      />
                     </div>
                   )
                 )}
