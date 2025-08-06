@@ -79,5 +79,10 @@ export default defineConfig({
    server: {
     host: true,
     port: 5173
-  }
+  },
+   resolve: {
+    alias: [
+      { find: './runtimeConfig', replacement: './runtimeConfig.browser' }
+    ]
+  },
 });
