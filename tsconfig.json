@@ -5,7 +5,6 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
-    "types": ["vite-plugin-pwa/client"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -14,7 +13,6 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
 
     /* Linting */
     "strict": true,
@@ -22,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*", "src/react-jsx-runtime.d.ts","src/vite-env.d.ts"],
+  "include": ["src/**/*", "src/react-jsx-runtime.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
