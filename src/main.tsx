@@ -9,6 +9,15 @@ import { registerSW } from 'virtual:pwa-register';
 
 Amplify.configure(outputs);
 
+registerSW({
+  onNeedRefresh() {
+    console.log("🔄 New version available.");
+  },
+  onOfflineReady() {
+    console.log("✅ App is offline ready.");
+  }
+});
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <div style={{ width: "100%" }}>
@@ -17,7 +26,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
   </React.StrictMode>
 );
 
-// Register Firebase SW
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker
     .register('/firebase-messaging-sw.js')
@@ -28,15 +36,7 @@ if ('serviceWorker' in navigator) {
     .catch((err) => console.error('❌ Firebase SW registration failed:', err));
 }
 
-// Register PWA SW via vite-plugin-pwa
-registerSW({
-  onNeedRefresh() {
-    console.log("🔄 New version available.");
-  },
-  onOfflineReady() {
-    console.log("✅ App is offline ready.");
-  }
-});
+
 
 // Foreground FCM handling
 onMessageListener()
