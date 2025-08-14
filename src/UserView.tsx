@@ -7,7 +7,6 @@ import './AdminView.css';
 import outputs from '../amplify_outputs.json';
 import { FiCalendar } from 'react-icons/fi';
 
-
 Amplify.configure(outputs);
 
 interface ReferenceImage {
@@ -174,6 +173,7 @@ const UserView: React.FC<HeaderProps> = ({ setPunchType, punchType }) => {
     try {
       const response = await fetch(
         `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=compareWithUserIdAndBranchName&sessionId=${sessionId}&userId=${uniqueUserToken}&userCode=${loginUsername}&companyId=${host}&branchName=${loginBranch}`
+        // `https://udi6nn4bs6.execute-api.ap-south-1.amazonaws.com/dev1/getsessionid?method=compareFaceAcrossBranches&sessionId=${sessionId}&companyId=${host}`
       );
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -240,7 +240,6 @@ const UserView: React.FC<HeaderProps> = ({ setPunchType, punchType }) => {
   };
 
   return (
-    <>
     <div>
       <div style={{ display: 'flex', justifyContent: 'end', padding: '5px' }}>
         <div style={{ display: 'flex', gap: '5px' }}>
@@ -333,7 +332,6 @@ const UserView: React.FC<HeaderProps> = ({ setPunchType, punchType }) => {
         </ThemeProvider>
       )}
     </div>
-    </>
   );
 };
 export default UserView;

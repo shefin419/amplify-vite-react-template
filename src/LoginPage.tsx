@@ -54,7 +54,7 @@ export default function LoginPage({ onLoginSuccess }: LoginPageProps) {
       );
 
       const data = await response.json();
-      // console.log("Login Response:", data);
+      console.log("Login Response:", data);
       switch (data?.message) {
         case "Invalid credentials":
           setError("Wrong password. Please try again.");

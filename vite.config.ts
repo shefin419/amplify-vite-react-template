@@ -8,9 +8,6 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-       devOptions: {
-        enabled: true, // For testing PWA in dev
-      },
       includeAssets: ['favicon.ico', 'robots.txt', 'fblogo2502.png', 'LivenessIcon16.png', 'LivenessIcon32.png', 'maskable_icon_x48.png','offline.html'],
       manifest: {
         name: 'My Face Reko App',
@@ -83,5 +80,4 @@ export default defineConfig({
     host: true,
     port: 5173
   }
-  
 });
