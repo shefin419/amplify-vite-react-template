@@ -15,12 +15,10 @@ type AdminViewProps = {
   punchType: "IN" | "OUT" | null;
   setPunchType: Dispatch<SetStateAction<"IN" | "OUT" | null>>;
 };
-
 interface ReferenceImage {
   Bytes?: string;
   S3Object?: { Bucket: string; Name: string };
 }
-
 interface Coordinates {
   latitude: number;
   longitude: number;
@@ -495,7 +493,6 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
               onChange={(e) => {
                 const selectedBranchId = e.target.value;
                 setBranchId(selectedBranchId);
-
                 // Save selected branch and current location immediately
                 if (navigator.geolocation) {
                   navigator.geolocation.getCurrentPosition(
@@ -507,6 +504,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
                           longitude: coords.longitude,
                         },
                       };
+                      console.log( JSON.stringify(branchLocation),"/////////////////")
                       localStorage.setItem("selectedBranchLocation", JSON.stringify(branchLocation));
                     },
                     (error) => {
