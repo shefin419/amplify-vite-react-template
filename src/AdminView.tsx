@@ -69,7 +69,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
         setError(new Error("Failed to parse branch details"));
       }
     }
-  }, []);
+  }, [auditImages, branchMap, branches, comparisonResult, confidence]);
 
   // Create liveness session when started
   useEffect(() => {
@@ -532,7 +532,7 @@ const AdminView: React.FC<AdminViewProps> = ({ buttonName, punchType, setPunchTy
               </option>
               {Object.entries(branchMap).map(([name, id]) => (
                 <option key={id} value={id}>
-                  {name === "HO" ? "Head Office" : name}
+                  {name === "HO" ? "Head Ofice" : name}
                 </option>
               ))}
             </select>

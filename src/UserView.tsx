@@ -5,7 +5,6 @@ import { Amplify } from 'aws-amplify';
 import '@aws-amplify/ui-react/styles.css';
 import './AdminView.css';
 import outputs from '../amplify_outputs.json';
-// import { FiCalendar } from 'react-icons/fi';
 import { FiShare2 } from "react-icons/fi";
 
 Amplify.configure(outputs);
@@ -14,7 +13,6 @@ interface ReferenceImage {
   Bytes?: string;
   S3Object?: { Bucket: string; Name: string };
 }
-
 interface HeaderProps {
   punchType: 'IN' | 'OUT' | null;
   setPunchType: Dispatch<SetStateAction<'IN' | 'OUT' | null>>;
@@ -86,7 +84,7 @@ const UserView: React.FC<HeaderProps> = ({ setPunchType, punchType }) => {
     setPunchRecorded(null);
     setAttendanceStatus('');
     setError(null);
-  }, [punchType]);
+  }, [auditImages, comparisonResult, confidence, punchType, uploadStatus]);
 
   const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number): number => {
     const R = 6371e3; // Earth radius in meters
