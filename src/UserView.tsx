@@ -53,7 +53,6 @@ const UserView: React.FC<HeaderProps> = ({ setPunchType, punchType }) => {
   localStorage.setItem("attendanceMode", selectedMode);
   };
 
-  // Fetch session ID and reset states when punchType changes
   useEffect(() => {
     if (punchType) {
       const fetchSession = async () => {
